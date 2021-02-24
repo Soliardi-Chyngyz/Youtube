@@ -1,17 +1,22 @@
 package com.chyngyz.youtube.ui.mainActivity
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
-import android.widget.BaseAdapter
+import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.chyngyz.youtube.R
 import com.chyngyz.youtube.data.model.Info
 import com.chyngyz.youtube.data.model.VideoInfo
+import com.chyngyz.youtube.network.NetConnection
 import com.chyngyz.youtube.network.RetrofitService
 import com.chyngyz.youtube.ui.adapter.MainActivityAdapter
-import com.chyngyz.youtube.ui.adapter.PlayListAdapter
 import com.chyngyz.youtube.ui.listActivity.ListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -19,7 +24,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class PlayListActivity : AppCompatActivity(), com.chyngyz.youtube.core.BaseAdapter.IBaseAdapterClickListener<Info> {
+class PlayListActivity : AppCompatActivity(),
+    com.chyngyz.youtube.core.BaseAdapter.IBaseAdapterClickListener<Info> {
 
     private lateinit var adapter: MainActivityAdapter
 
@@ -29,7 +35,19 @@ class PlayListActivity : AppCompatActivity(), com.chyngyz.youtube.core.BaseAdapt
 
         initAdapter()
         popAdapter()
+        network()
 
+    }
+
+    private fun network() {
+        val networkConnection = NetConnection(this)
+        networkConnection.observe(this, { isConnected ->
+            if (isConnected) {
+                no_network_img.visibility = View.GONE
+                popAdapter()
+            } else
+                no_network_img.visibility = View.VISIBLE
+        })
     }
 
     private fun popAdapter() {
@@ -57,16 +75,12 @@ class PlayListActivity : AppCompatActivity(), com.chyngyz.youtube.core.BaseAdapt
         main_recycler.adapter = adapter
         main_recycler.itemAnimator = DefaultItemAnimator()
         main_recycler.isNestedScrollingEnabled = true
-
-
     }
 
     override fun onClick(model: Info) {
-        val intent = Intent(this, ListActivity::class.java).apply{
+        val intent = Intent(this, ListActivity::class.java).apply {
             putExtra("key", model)
         }
         startActivity(intent)
     }
-
-
 }
