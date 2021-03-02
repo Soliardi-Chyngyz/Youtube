@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseAdapter<T>(
     private val holderLayoutId: Int,
     var data: MutableList<T>
-) :
-    RecyclerView.Adapter<BaseAdapter<T>.BaseViewHolder>() {
+) : RecyclerView.Adapter<BaseAdapter<T>.BaseViewHolder>() {
 
     var listener: IBaseAdapterClickListener<T>? = null
 

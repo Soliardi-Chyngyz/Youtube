@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chyngyz.youtube.R
+import com.chyngyz.youtube.core.BaseViewHolder
 import com.chyngyz.youtube.data.model.Info
-import com.chyngyz.youtube.data.model.VideoInfo
 import kotlinx.android.synthetic.main.main_recycler.view.*
-import retrofit2.Callback
 
 class PlayListAdapter(
     private val listener: (pos: Int, info: Info) -> Unit

@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitService private constructor(){
+class RetrofitService(){
 
     companion object {
         private var apiInterface: ApiInterface? = null

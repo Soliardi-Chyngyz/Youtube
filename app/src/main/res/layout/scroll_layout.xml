@@ -7,15 +7,14 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_list2">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playListsInfoFragment_recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+   <!-- <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/main_recycler" />
-
+        tools:listitem="@layout/list_item" />
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

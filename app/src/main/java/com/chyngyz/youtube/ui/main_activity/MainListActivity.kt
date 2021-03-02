@@ -1,14 +1,9 @@
-package com.chyngyz.youtube.ui.mainActivity
+package com.chyngyz.youtube.ui.main_activity
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.chyngyz.youtube.R
@@ -16,22 +11,25 @@ import com.chyngyz.youtube.data.model.Info
 import com.chyngyz.youtube.data.model.VideoInfo
 import com.chyngyz.youtube.network.NetConnection
 import com.chyngyz.youtube.network.RetrofitService
-import com.chyngyz.youtube.ui.adapter.MainActivityAdapter
-import com.chyngyz.youtube.ui.listActivity.ListActivity
+import com.chyngyz.youtube.ui.main_activity.adapter.MainAdapter
+import com.chyngyz.youtube.ui.list_activity.PlayListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class PlayListActivity : AppCompatActivity(),
+class MainListActivity : AppCompatActivity(),
     com.chyngyz.youtube.core.BaseAdapter.IBaseAdapterClickListener<Info> {
 
-    private lateinit var adapter: MainActivityAdapter
+    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        actionBar?.hide()
         setContentView(R.layout.activity_main)
+
 
         initAdapter()
         popAdapter()
@@ -58,6 +56,7 @@ class PlayListActivity : AppCompatActivity(),
             ) {
                 if (response.isSuccessful)
                     response.body()?.let {
+                        main_progress_bar.visibility = View.GONE
                         adapter.data = response.body()!!.items
                         main_recycler.adapter = adapter
                     }
@@ -70,7 +69,7 @@ class PlayListActivity : AppCompatActivity(),
     }
 
     fun initAdapter() {
-        adapter = MainActivityAdapter()
+        adapter = MainAdapter()
         adapter.listener = this
         main_recycler.adapter = adapter
         main_recycler.itemAnimator = DefaultItemAnimator()
@@ -78,7 +77,7 @@ class PlayListActivity : AppCompatActivity(),
     }
 
     override fun onClick(model: Info) {
-        val intent = Intent(this, ListActivity::class.java).apply {
+        val intent = Intent(this, PlayListActivity::class.java).apply {
             putExtra("key", model)
         }
         startActivity(intent)

@@ -1,4 +1,4 @@
-package com.chyngyz.youtube.ui.adapter
+package com.chyngyz.youtube.core
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

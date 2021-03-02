@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="toolbar" type="id" />
+    <item name="fab" type="id" />
+    <item name="app_bar" type="id" />
+    <item name="progress_bar" type="id" />
+    <item name="list_collaps_sub_title" type="id" />
+    <item name="list_collaps_title" type="id" />
+    <item name="toolbar_layout" type="id" />
+    <item name="list_count_series" type="id" />
+    <item name="list_img" type="id" />
+</resources>

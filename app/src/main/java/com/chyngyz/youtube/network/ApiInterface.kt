@@ -1,5 +1,6 @@
 package com.chyngyz.youtube.network
 
+import com.chyngyz.youtube.data.model.DetailsItem
 import com.chyngyz.youtube.data.model.Info
 import com.chyngyz.youtube.data.model.PlayListItem
 import com.chyngyz.youtube.data.model.VideoInfo
