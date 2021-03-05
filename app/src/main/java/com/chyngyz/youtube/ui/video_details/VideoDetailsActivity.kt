@@ -42,8 +42,10 @@ class VideoDetailsActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedL
         player: YouTubePlayer?,
         wasRestored: Boolean
     ) {
-        if (!wasRestored)
+        if (!wasRestored) {
             player?.cueVideo(videoId.toString())
+            Toast.makeText(this, "Yulalaaa", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onInitializationFailure(
