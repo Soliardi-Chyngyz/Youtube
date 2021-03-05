@@ -14,7 +14,7 @@ class Repository: ReposApiClient{
     val retrofitService =  RetrofitService()
 
     override fun getData(id: String) : Call<PlayListItem> {
-        val callback = RetrofitService.getInstance()?.getPLayList(Constant.PART, Constant.PAGE_TOKEN, id, Constant.KEY)
+        val callback = RetrofitService.getInstance()?.getPLayList(Constant.PART, Constant.PAGE_TOKEN, id, Constant.API_KEY)
         return callback!!
     }
 }

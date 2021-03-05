@@ -1,6 +1,7 @@
 package com.chyngyz.youtube.ui.list_activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,20 +9,23 @@ import android.view.View
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
+import com.chyngyz.youtube.Constant
 import com.chyngyz.youtube.R
+import com.chyngyz.youtube.core.BaseActivity
 import com.chyngyz.youtube.core.BaseAdapter
 import com.chyngyz.youtube.core.loadImg
 import com.chyngyz.youtube.data.model.DetailsItem
 import com.chyngyz.youtube.data.model.Info
 import com.chyngyz.youtube.ui.list_activity.adapter.ListItemAdapter
+import com.chyngyz.youtube.ui.video_details.VideoDetailsActivity
 import com.chyngyz.youtube.utils.ololo
 import com.chyngyz.youtube.utils.showToast
 import kotlinx.android.synthetic.main.activity_list2.*
 import kotlinx.android.synthetic.main.scroll_layout.*
 
-class PlayListActivity : AppCompatActivity(), BaseAdapter.IBaseAdapterClickListener<DetailsItem> {
+class PlayListActivity :
+    BaseActivity<PlayListViewModel>(R.layout.activity_list2, PlayListViewModel::class.java) {
     private lateinit var adapter: ListItemAdapter
-    private var vModel: PlayListViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +33,17 @@ class PlayListActivity : AppCompatActivity(), BaseAdapter.IBaseAdapterClickListe
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        setContentView(R.layout.activity_list2)
+//        setContentView(R.layout.activity_list2)
 
         initAdapter()
-        vModel = ViewModelProvider(this).get(PlayListViewModel::class.java)
+//        vModel = ViewModelProvider(this).get(PlayListViewModel::class.java)
         getData()
 
     }
 
     private fun initAdapter() {
         adapter = ListItemAdapter()
-        adapter.listener = this
+        adapter.listener = ::onClick
         list_recyclerview.adapter = adapter
         list_recyclerview.isNestedScrollingEnabled = true
         list_recyclerview.itemAnimator = DefaultItemAnimator()
@@ -54,15 +58,18 @@ class PlayListActivity : AppCompatActivity(), BaseAdapter.IBaseAdapterClickListe
             val count = info?.contentDetails?.itemCount
             list_count_series.text = "$count video series"
             list_collaps_sub_title.text = info?.snippet?.description
-            vModel?.setDataResource(info.id!!)
+            viewModel?.setDataResource(info.id!!)
         }
-        vModel?.getData()?.observe(this, {
+        viewModel?.getData()?.observe(this, {
             list_progress_bar.visibility = View.GONE
-            adapter.data = it?.items!!
+            adapter.setAllData(it?.items!!)
             adapter.notifyDataSetChanged()
         })
     }
 
-    override fun onClick(model: DetailsItem) {
+    fun onClick(model: DetailsItem) {
+        val intent = Intent(this, VideoDetailsActivity::class.java)
+        intent.putExtra(Constant.YOUTUBE_ID, model)
+        startActivity(intent)
     }
 }

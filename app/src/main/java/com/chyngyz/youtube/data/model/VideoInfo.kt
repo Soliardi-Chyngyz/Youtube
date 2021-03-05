@@ -14,10 +14,13 @@ data class Info(
 ) : Serializable
 
 data class ContentDetails(
-    var itemCount: Int = 0
+    var itemCount: Int = 0,
+    var videoPublishedAt: String? = null,
+    var videoId: String? = null
 ) : Serializable
 
 data class Snippet(
+    var publishedAt: String? = null,
     var channelId: String? = null,
     var title: String? = null,
     var description: String? = null,

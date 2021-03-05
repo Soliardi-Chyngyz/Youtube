@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.chyngyz.youtube.core.BaseViewModel
 import com.chyngyz.youtube.data.model.DetailsItem
 import com.chyngyz.youtube.data.model.PlayListItem
 import com.chyngyz.youtube.data.repository.Repository
@@ -11,9 +12,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PlayListViewModel() : ViewModel() {
+class PlayListViewModel() : BaseViewModel() {
     private val repository = Repository()
-    private val playListItems = MutableLiveData<PlayListItem?>()
+    private val playListItems = MutableLiveData<PlayListItem>()
 
     fun getData(): LiveData<PlayListItem?> {
         return playListItems

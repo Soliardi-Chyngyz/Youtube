@@ -78,4 +78,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
+    //YouTube Video Player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 }

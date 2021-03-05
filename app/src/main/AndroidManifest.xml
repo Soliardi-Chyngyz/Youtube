@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Youtube"
         android:versionCode="1">
-        <activity android:name=".ui.list_activity.PlayListActivity"></activity>
+        <activity android:name=".ui.video_details.VideoDetailsActivity"></activity>
+        <activity android:name=".ui.list_activity.PlayListActivity" />
         <activity
             android:name=".ui.main_activity.MainListActivity"
             android:label="YouTube Data API Android Quickstart">
