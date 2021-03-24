@@ -5,5 +5,5 @@ import retrofit2.Call
 import retrofit2.Callback
 
 interface ReposApiClient {
-    fun getData(id: String) : Call<PlayListItem>
+    suspend fun getData(id: String) : Call<PlayListItem>
 }

@@ -1,8 +1,13 @@
 package com.chyngyz.youtube.data.model
 
+import androidx.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
-
+@Entity(tableName = "playList")
 data class PlayListItem(
+    @NonNull
+    @PrimaryKey(autoGenerate = true) var id: Int,
     var playlistApiId: String? = null,
     var items: MutableList<DetailsItem>,
     var nextPageToken: String?

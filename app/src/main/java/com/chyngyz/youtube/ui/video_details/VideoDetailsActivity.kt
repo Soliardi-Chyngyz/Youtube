@@ -12,6 +12,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import kotlinx.android.synthetic.main.activity_video_details.*
+import kotlinx.coroutines.GlobalScope
 import java.lang.String
 
 class VideoDetailsActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
@@ -23,9 +24,9 @@ class VideoDetailsActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedL
         setContentView(R.layout.activity_video_details)
         val model = intent.getSerializableExtra(Constant.YOUTUBE_ID) as DetailsItem
         videoId = (model.snippet.resourceId?.videoId ?: "") as String
-
         setData(model)
         setupViews()
+
     }
 
     private fun setData(model: DetailsItem) {

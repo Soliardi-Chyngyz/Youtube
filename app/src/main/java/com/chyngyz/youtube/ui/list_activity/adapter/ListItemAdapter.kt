@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.list_item.view.*
 
 class ListItemAdapter : NewBaseAdapter<DetailsItem>(R.layout.list_item) {
 
-
     override fun onBind(view: View, model: DetailsItem) {
         view.list_recycler_desc.text = model.snippet?.title
         view.list_recycler_under_desc.text = model.snippet?.publishedAt

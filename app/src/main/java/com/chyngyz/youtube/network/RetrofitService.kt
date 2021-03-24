@@ -1,5 +1,6 @@
 package com.chyngyz.youtube.network
 
+import com.chyngyz.youtube.data.room.InfoDao
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

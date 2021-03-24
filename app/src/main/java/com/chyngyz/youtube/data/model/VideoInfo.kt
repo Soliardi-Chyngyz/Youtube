@@ -1,11 +1,18 @@
 package com.chyngyz.youtube.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import org.jetbrains.annotations.NotNull
 import java.io.Serializable
 
+@Entity
 data class VideoInfo(
+    @NotNull
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
     var nextPageToken: String? = null,
     val items: MutableList<Info>
-    )
+)
 
 data class Info(
     var id: String? = null,

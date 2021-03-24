@@ -13,6 +13,10 @@ fun View.visible(){
     this.visibility = View.VISIBLE
 }
 
+fun View.gone(){
+    this.visibility = View.GONE
+}
+
 fun View.ololo(){
     this.setBackgroundColor(Color.BLUE)
 }

@@ -1,19 +1,33 @@
 package com.chyngyz.youtube.core
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.chyngyz.youtube.ui.list_activity.PlayListViewModel
+import com.chyngyz.youtube.utils.showToast
+import org.koin.android.ext.android.inject
 
-abstract class BaseActivity<T : ViewModel>(@LayoutRes val layoutId: Int, val vmClass: Class<T>) : AppCompatActivity() {
-    lateinit var viewModel: T
+abstract class BaseActivity<T : BaseViewModel>(@LayoutRes val layoutId: Int, val vmClass: Class<T>) : AppCompatActivity() {
+     lateinit var viewModel: T
+
+
+    abstract fun getViewModule(): T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
-        viewModel = ViewModelProviders.of(this).get(vmClass)
+        viewModel = getViewModule()
+        viewModel = ViewModelProvider(this).get(vmClass)
+        observe(viewModel)
+        viewModel.getToast().observe(this, Observer { this.showToast(it) })
     }
+
+    private fun observe(viewModel: T){
+        viewModel.isLoading().observe(this, {progress(it)})
+    }
+
+    abstract fun progress(it: Boolean)
+
 }

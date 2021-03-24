@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.chyngyz.youtube.Constant
@@ -16,29 +17,33 @@ import com.chyngyz.youtube.core.BaseAdapter
 import com.chyngyz.youtube.core.loadImg
 import com.chyngyz.youtube.data.model.DetailsItem
 import com.chyngyz.youtube.data.model.Info
+import com.chyngyz.youtube.data.model.PlayListItem
 import com.chyngyz.youtube.ui.list_activity.adapter.ListItemAdapter
+import com.chyngyz.youtube.ui.main_activity.MainListViewModel
 import com.chyngyz.youtube.ui.video_details.VideoDetailsActivity
+import com.chyngyz.youtube.utils.gone
 import com.chyngyz.youtube.utils.ololo
 import com.chyngyz.youtube.utils.showToast
+import com.chyngyz.youtube.utils.visible
 import kotlinx.android.synthetic.main.activity_list2.*
 import kotlinx.android.synthetic.main.scroll_layout.*
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.java.KoinJavaComponent
 
-class PlayListActivity :
-    BaseActivity<PlayListViewModel>(R.layout.activity_list2, PlayListViewModel::class.java) {
+class PlayListActivity : AppCompatActivity(R.layout.activity_list2)/*BaseActivity<PlayListViewModel>(R.layout.activity_list2, PlayListViewModel::class.java)*/ {
     private lateinit var adapter: ListItemAdapter
+    private val viewModel: PlayListViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-//        setContentView(R.layout.activity_list2)
-
         initAdapter()
-//        vModel = ViewModelProvider(this).get(PlayListViewModel::class.java)
         getData()
-
     }
 
     private fun initAdapter() {
@@ -53,17 +58,20 @@ class PlayListActivity :
     private fun getData() {
         val info: Info? = intent.getSerializableExtra("key") as Info?
         info?.let {
-            toolbar_layout.title = info?.snippet?.title
-            info?.snippet.thumbnails?.medium?.url?.let { list_img.loadImg(it) }
-            val count = info?.contentDetails?.itemCount
+            toolbar_layout.title = info.snippet.title
+            info.snippet.thumbnails?.medium?.url?.let { list_img.loadImg(it) }
+            val count = info.contentDetails?.itemCount
             list_count_series.text = "$count video series"
-            list_collaps_sub_title.text = info?.snippet?.description
-            viewModel?.setDataResource(info.id!!)
+            list_collaps_sub_title.text = info.snippet.description
+            viewModel.setDataResource(info.id!!)
         }
-        viewModel?.getData()?.observe(this, {
-            list_progress_bar.visibility = View.GONE
-            adapter.setAllData(it?.items!!)
-            adapter.notifyDataSetChanged()
+        viewModel.getDataPlayList().observe(this, {
+//            list_progress_bar.visibility = View.GONE
+            adapter.setAllData(it.items)
+        })
+        viewModel.isLoading().observe(this, {
+            if(it) list_progress_bar.visible()
+            else list_progress_bar.gone()
         })
     }
 
