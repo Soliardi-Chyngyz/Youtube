@@ -2,18 +2,12 @@ package com.chyngyz.youtube.data.repository
 
 import android.util.Log
 import androidx.lifecycle.liveData
-import com.chyngyz.youtube.data.model.DetailsItem
 import com.chyngyz.youtube.data.model.PlayListItem
-//import androidx.lifecycle.liveData
 import com.chyngyz.youtube.data.model.VideoInfo
 import com.chyngyz.youtube.data.room.AppDatabase
 import com.chyngyz.youtube.network.ApiInterface
 import com.chyngyz.youtube.utils.Resource
-import com.chyngyz.youtube.utils.Status
 import kotlinx.coroutines.Dispatchers
-import java.lang.Exception
-
-// playlists?part=snippet,contentDetails&channelId=UC4X7J9D6VbTIwnFDFNkfQ1A&key=AIzaSyCAdfnIfC8_WM9F4SXrl9Jg66TIw7yV5O0
 
 const val channelId = "UC4X7J9D6VbTIwnFDFNkfQ1A"
 const val key = "AIzaSyCAdfnIfC8_WM9F4SXrl9Jg66TIw7yV5O0"

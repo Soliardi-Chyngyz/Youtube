@@ -5,6 +5,7 @@ import com.chyngyz.youtube.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.dsl.koinApplication
 
 class MyApp : Application() {
 
@@ -12,12 +13,8 @@ class MyApp : Application() {
         super.onCreate()
 
         startKoin {
-            androidLogger()
             androidContext(this@MyApp)
-
-            modules(listOf(
-                appModule,
-            ))
+            modules(appModule)
         }
     }
 }

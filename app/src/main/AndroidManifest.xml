@@ -18,16 +18,19 @@
         android:versionCode="1"
         tools:replace="android:theme"
         android:name=".MyApp">
-        <activity android:name=".ui.video_details.VideoDetailsActivity" />
-        <activity android:name=".ui.list_activity.PlayListActivity" />
-        <activity
-            android:name=".ui.main_activity.MainListActivity"
-            android:label="YouTube Data API Android Quickstart">
+        <activity android:name=".ui.video_details.VideoDetailsActivity"
+            android:configChanges="orientation|screenSize|layoutDirection">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.list_activity.PlayListActivity" />
+        <activity
+            android:name=".ui.main_activity.MainListActivity"
+            android:label="YouTube Data API Android Quickstart">
+
         </activity>
 
         <meta-data

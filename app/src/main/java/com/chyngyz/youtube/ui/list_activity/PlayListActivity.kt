@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import androidx.lifecycle.Observer
@@ -18,6 +19,8 @@ import com.chyngyz.youtube.core.loadImg
 import com.chyngyz.youtube.data.model.DetailsItem
 import com.chyngyz.youtube.data.model.Info
 import com.chyngyz.youtube.data.model.PlayListItem
+import com.chyngyz.youtube.databinding.ActivityList2Binding
+import com.chyngyz.youtube.databinding.ActivityListBinding
 import com.chyngyz.youtube.ui.list_activity.adapter.ListItemAdapter
 import com.chyngyz.youtube.ui.main_activity.MainListViewModel
 import com.chyngyz.youtube.ui.video_details.VideoDetailsActivity
@@ -31,9 +34,10 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
-class PlayListActivity : AppCompatActivity(R.layout.activity_list2)/*BaseActivity<PlayListViewModel>(R.layout.activity_list2, PlayListViewModel::class.java)*/ {
+class PlayListActivity : BaseActivity<PlayListViewModel, ActivityList2Binding>() {
     private lateinit var adapter: ListItemAdapter
-    private val viewModel: PlayListViewModel by inject()
+    override val viewModel: PlayListViewModel by inject()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,4 +84,13 @@ class PlayListActivity : AppCompatActivity(R.layout.activity_list2)/*BaseActivit
         intent.putExtra(Constant.YOUTUBE_ID, model)
         startActivity(intent)
     }
+
+    override fun progress(it: Boolean) {
+
+    }
+
+    override fun inflateViewBinding(inflater: LayoutInflater): ActivityList2Binding {
+        return ActivityList2Binding.inflate(inflater)
+    }
+
 }

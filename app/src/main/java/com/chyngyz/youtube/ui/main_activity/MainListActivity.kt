@@ -2,25 +2,28 @@ package com.chyngyz.youtube.ui.main_activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.chyngyz.youtube.R
 import com.chyngyz.youtube.core.BaseActivity
 import com.chyngyz.youtube.core.BaseAdapter
 import com.chyngyz.youtube.data.model.Info
+import com.chyngyz.youtube.databinding.ActivityMainBinding
 import com.chyngyz.youtube.network.NetConnection
 import com.chyngyz.youtube.ui.list_activity.PlayListActivity
 import com.chyngyz.youtube.ui.main_activity.adapter.MainAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
-class MainListActivity : AppCompatActivity(),
+class MainListActivity :
+    BaseActivity<MainListViewModel, ActivityMainBinding>(),
     BaseAdapter.IBaseAdapterClickListener<Info> {
 
+    override val viewModel: MainListViewModel by inject()
+
     private lateinit var adapter: MainAdapter
-    private val viewModel: MainListViewModel by inject()
+//    private val viewModel: MainListViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,7 @@ class MainListActivity : AppCompatActivity(),
         initAdapter()
         popAdapter()
         network()
+
     }
 
     private fun network() {
@@ -73,4 +77,14 @@ class MainListActivity : AppCompatActivity(),
         }
         startActivity(intent)
     }
+
+    override fun progress(it: Boolean) {
+
+    }
+
+    override fun inflateViewBinding(inflater: LayoutInflater): ActivityMainBinding {
+        return ActivityMainBinding.inflate(inflater)
+    }
+
+
 }

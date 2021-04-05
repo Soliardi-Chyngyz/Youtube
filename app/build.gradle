@@ -34,6 +34,7 @@ android {
     }
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 }
 
@@ -107,7 +108,18 @@ dependencies {
     // coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3'
-    // koin
-    implementation 'org.koin:koin-androidx-viewmodel:2.2.1'
-    implementation "org.koin:koin-android:2.2.1"
+    // KoinDI
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
+
+    // exoPlayer
+    def exo_player_version = "2.11.6"
+    implementation "com.google.android.exoplayer:exoplayer:$exo_player_version"
+    /*implementation "com.google.android.exoplayer:$exo_player_version"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exo_player_version"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exo_player_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_player_version"*/
 }

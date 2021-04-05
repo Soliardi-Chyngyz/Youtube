@@ -1,32 +1,45 @@
 package com.chyngyz.youtube.ui.video_details
 
-import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.chyngyz.youtube.Constant
 import com.chyngyz.youtube.R
+import com.chyngyz.youtube.core.BaseActivity
 import com.chyngyz.youtube.data.model.DetailsItem
-import com.chyngyz.youtube.data.model.PlayListItem
-import com.google.android.youtube.player.YouTubeBaseActivity
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
+import com.chyngyz.youtube.databinding.ActivityVideoDetailsBinding
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.activity_video_details.*
-import kotlinx.coroutines.GlobalScope
-import java.lang.String
+import org.koin.android.ext.android.inject
 
-class VideoDetailsActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
+class VideoDetailsActivity : AppCompatActivity() {
 
     lateinit var videoId: String
+    private var mPlayer: SimpleExoPlayer? = null
+    private var currentWindow = 0
+    private var playBackPos: Long = 0
+    private var playWhenReady = true
+    private val hlsUri = "https://www.youtube.com/watch?v=9H7OiP1AQx0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video_details)
-        val model = intent.getSerializableExtra(Constant.YOUTUBE_ID) as DetailsItem
-        videoId = (model.snippet.resourceId?.videoId ?: "") as String
-        setData(model)
-        setupViews()
+        /*val model = intent.getSerializableExtra(Constant.YOUTUBE_ID) as DetailsItem
+        videoId = (model.snippet.resourceId?.videoId ?: "")
+        setData(model)*/
+    }
 
+    private fun initPlayer() {
+        mPlayer = SimpleExoPlayer.Builder(this).build()
+        youtube_view.player = mPlayer
+        mPlayer!!.playWhenReady = true
+        mPlayer!!.seekTo(playBackPos)
+        mPlayer!!.prepare(buildMediaSource(), false, false,)
     }
 
     private fun setData(model: DetailsItem) {
@@ -34,41 +47,55 @@ class VideoDetailsActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedL
         video_desc.text = model.snippet.description
     }
 
-    private fun setupViews() {
-        youtube_view.initialize(Constant.API_KEY, this)
-    }
-
-    override fun onInitializationSuccess(
-        p0: YouTubePlayer.Provider?,
-        player: YouTubePlayer?,
-        wasRestored: Boolean
-    ) {
-        if (!wasRestored) {
-            player?.cueVideo(videoId.toString())
-            Toast.makeText(this, "Yulalaaa", Toast.LENGTH_SHORT).show()
+    override fun onStart() {
+        super.onStart()
+        if(Util.SDK_INT >= 24){
+            initPlayer()
         }
     }
 
-    override fun onInitializationFailure(
-        p0: YouTubePlayer.Provider?,
-        errorReason: YouTubeInitializationResult
-    ) {
-        if (errorReason.isUserRecoverableError) {
-            errorReason.getErrorDialog(this, RECOVERY_REQUEST).show()
-        } else {
-            val error = String.format(getString(R.string.player_error), errorReason.toString())
-            Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+    override fun onResume() {
+        super.onResume()
+        hideSystemUI()
+        if(Util.SDK_INT < 24 || mPlayer == null) {
+            initPlayer()
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RECOVERY_REQUEST) {
-            youtube_view.initialize(Constant.API_KEY, this)
-        }
+    override fun onPause() {
+        super.onPause()
+        if(Util.SDK_INT < 24)
+            releasePlayer()
     }
 
-    companion object {
-        private const val RECOVERY_REQUEST = 1
+    private fun releasePlayer() {
+        if(mPlayer == null) return
+        playWhenReady = mPlayer!!.playWhenReady
+        playBackPos = mPlayer!!.currentPosition
+        currentWindow = mPlayer!!.currentWindowIndex
+        mPlayer!!.release()
+        mPlayer = null
+    }
+
+    private fun hideSystemUI() {
+        youtube_view.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+
+    }
+
+    private fun buildMediaSource(): MediaSource {
+        val userAgent = Util.getUserAgent(this, youtube_view.context.getString(R.string.app_name))
+
+        val dataSourceFactory = DefaultHttpDataSourceFactory(userAgent)
+        val hlsMediaSource =  HlsMediaSource.Factory(dataSourceFactory).
+        createMediaSource(Uri.parse(hlsUri))
+
+        return  hlsMediaSource
+
     }
 }
